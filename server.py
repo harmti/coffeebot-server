@@ -7,3 +7,9 @@ app = Flask(__name__)
 def hello():
     return 'Hello World!'
 
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    print("request.method:{}".format(request.method))
+
+    return "Hello tester"
