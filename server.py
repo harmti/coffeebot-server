@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import os
 from flask import Flask, request
+
+from process import process_data
 
 app = Flask(__name__)
 
@@ -18,13 +22,14 @@ def test():
 @app.route('/v1/post_data', methods=['GET', 'POST'])
 def post_data():
     print("/v1/post_data")
-    data=request.form['data']
+    values=request.form['values']
     start=request.form['start']
     end=request.form['end']
-    print("start:'{}'".format(start))
-    print("end:'{}'".format(end))
-    print("data:'{}'".format(data))
-    return "Got data:'{}'\n".format(data)
+    print("start:{}, end:{}, data:{}".format(start, end, values))
+
+    process_data(values, start, end)
+    return "Got data:'{}'\n".format(values)
+
 
 
 if __name__ == '__main__':
