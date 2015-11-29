@@ -41,7 +41,17 @@ class PowerData:
 
         self.debug_print()
 
-    def check_if_trigger(self):
+    def is_off(self):
+        if len(self.power_data) <= 1:
+            return True
+
+        if self.power_data[-1].power_state != POWER_OFF:
+            return False
+
+        return True
+
+
+    def is_ready(self):
         if len(self.power_data) <= 2:
             return False
 

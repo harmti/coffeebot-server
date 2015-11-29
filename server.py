@@ -22,14 +22,14 @@ def test():
 @app.route('/v1/post_data', methods=['GET', 'POST'])
 def post_data():
     print("/v1/post_data")
+    client_id=request.form['id']
     values=request.form['values']
     start=request.form['start']
     end=request.form['end']
-    print("start:{}, end:{}, data:{}".format(start, end, values))
+    print("client_id:{}, start:{}, end:{}, data:{}".format(client_id, start, end, values))
 
-    process_data(values, start, end)
+    process_data(client_id, values, start, end)
     return "Got data:'{}'\n".format(values)
-
 
 
 if __name__ == '__main__':
