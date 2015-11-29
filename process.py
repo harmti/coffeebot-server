@@ -4,6 +4,8 @@
 from datetime import datetime
 import dateutil.parser
 import itertools
+import requests
+
 
 from powerdata import PowerData
 
@@ -38,9 +40,20 @@ def process_data(values_raw, start, end):
         
         pd.add(value, timeval, timeval + time_interval * count)
         timeval += time_interval * count
-         
+
+    check_notify(pd)
+
+
+def check_notify(pd):
+    
+    print("check_notify()")
+    if pd.check_if_trigger() == True:
+        notify()
+    
+
          
 def notify():
+    print("notify()")
     payload = { "token": "aVrpYcqBBfE2rWVk3wW5yM28gLK3CH", 
                 "user": "gkKtGcAqXZPZ4Yyeii8ArW6jx9oRA9",
                 "title": u"Kahvia",
