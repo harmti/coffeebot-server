@@ -2,7 +2,11 @@
 
 POWER_OFF, POWER_WARMUP, POWER_MAKING = range(3)
 
+# coffee machine has to be on at least this many seconds
 MIN_MAKING_TIME_S = 60
+
+# don't anymore report if this many seconds has already passed
+MAX_WARMUP_TIME_FOR_NOTIFY_S = 10 * 60
 
 def power_state(value):
     if value < 2:
@@ -61,9 +65,17 @@ class PowerData:
         if self.power_data[-2].power_state != POWER_MAKING:
             return False
 
-        diff = self.power_data[-2].end_time - self.power_data[-2].start_time
+        making_time = self.power_data[-2].end_time - self.power_data[-2].start_time
+        warmup_time = self.power_data[-1].end_time - self.power_data[-1].start_time
 
-        if diff.seconds < MIN_MAKING_TIME_S:
+        if making_time.seconds < MIN_MAKING_TIME_S:
+            return False
+
+        # Don't bother to report if this is already old news.  This
+        # should not happen in normal scenrarious, as client reports
+        # the power usage rather quickly. Anyway can happen in error
+        # situations, like network or server hickups.
+        if warmup_time.seconds > MAX_WARMUP_TIME_FOR_NOTIFY_S:
             return False
 
         return True
