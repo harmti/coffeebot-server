@@ -6,6 +6,7 @@ from flask import Flask, request
 from process import process_data
 
 app = Flask(__name__)
+app.debug = True
 
 @app.route('/')
 def hello():
