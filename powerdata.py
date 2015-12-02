@@ -43,7 +43,7 @@ class PowerData:
             datapoint = DataPoint(value, start_time, end_time)
             self.power_data.append(datapoint)
 
-        self.debug_print()
+        #self.debug_print()
 
     def is_off(self):
         if len(self.power_data) <= 1:

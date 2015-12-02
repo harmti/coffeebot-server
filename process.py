@@ -36,7 +36,7 @@ def process_data(client_id, values_raw, start, end):
     
     values = map(int, values_str)
     
-    print(values)
+    #print(values)
     
     start_time = dateutil.parser.parse(start)
     end_time = dateutil.parser.parse(end)
@@ -71,15 +71,15 @@ def check_notify(client_data):
     elif client_data.power_data.is_ready() == True:
         client_data.is_coffee_ready = True
         client_data.coffee_making_time = datetime.now()
-        notify()
+        notify(client_data)
 
          
 def notify():
-    print("notify()")
+    print("sending notification for client:{}".format(client_data.client_id))
     payload = { "token": "aVrpYcqBBfE2rWVk3wW5yM28gLK3CH", 
                 "user": "gkKtGcAqXZPZ4Yyeii8ArW6jx9oRA9",
                 "title": u"Kahvia",
-                "message": u"Tuoretta kahvetta" }
+                "message": u"Tuoretta kahvetta ({})".format(client_data.client_id[:4]) }
     r = requests.post("https://api.pushover.net/1/messages.json", data=payload)
 
 
