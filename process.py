@@ -74,7 +74,7 @@ def check_notify(client_data):
         notify(client_data)
 
          
-def notify():
+def notify(client_data):
     print("sending notification for client:{}".format(client_data.client_id))
     payload = { "token": "aVrpYcqBBfE2rWVk3wW5yM28gLK3CH", 
                 "user": "gkKtGcAqXZPZ4Yyeii8ArW6jx9oRA9",
