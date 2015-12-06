@@ -17,7 +17,6 @@ class ClientData:
         self.is_coffee_ready = False
         self.coffee_making_time = None
 
-
 data = {}
 
 def process_data(client_id, values_raw, start, end):
@@ -69,6 +68,7 @@ def check_notify(client_data):
         if client_data.power_data.is_off() == True:
             client_data.is_coffee_ready = False
     elif client_data.power_data.is_ready() == True:
+        print("Coffee is ready", client_data.__dict__)
         client_data.is_coffee_ready = True
         client_data.coffee_making_time = datetime.now()
         notify(client_data)
