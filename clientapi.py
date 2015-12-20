@@ -11,17 +11,9 @@ client_api = Blueprint('client_api', __name__)
 def hello():
     return 'Hello World!'
 
-@client_api.route('/helloworld', methods=['GET', 'POST'])
-def helloworld():
-    print("request.method:{}".format(request.method))
-    print(request)
-    name=request.form['name']
-    return "Hello World!{}\n".format(name)
-
-
 @client_api.route('/v1/post_data', methods=['GET', 'POST'])
-def post_data():
-    print("/v1/post_data")
+def v1_post_data():
+    print("Request: '{}', form:{}".format(request.url, request.form.keys()))
     client_id=request.form['id']
     values=request.form['values']
     start=request.form['start']

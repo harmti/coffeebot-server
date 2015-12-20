@@ -17,6 +17,10 @@ class ClientData:
         self.is_coffee_ready = False
         self.coffee_making_time = None
 
+    def debug_print(self):
+        attrs = vars(self)
+        print ', '.join("%s: %s" % item for item in attrs.items())
+
 data = {}
 
 def process_data(client_id, values_raw, start, end):
@@ -51,7 +55,7 @@ def process_data(client_id, values_raw, start, end):
         
     timeval = start_time
     for (value, items) in itertools.groupby(values):
-        print(value, items)
+        #print(value, items)
         count = len(list(items))
         
         client_data.power_data.add(value, timeval, timeval + time_interval * count)
