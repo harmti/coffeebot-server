@@ -8,10 +8,14 @@ MIN_MAKING_TIME_S = 60
 # don't anymore report if this many seconds has already passed
 MAX_WARMUP_TIME_FOR_NOTIFY_S = 10 * 60
 
+# data is stored in memory for this time
+STORE_DATA_TIME_S = 60 * 60
+
+
 def power_state(value):
     if value < 2:
         return POWER_OFF
-    if value < 500:
+    if value < 300:
         return POWER_WARMUP
     else:
         return POWER_MAKING
@@ -24,16 +28,20 @@ class DataPoint:
         self.start_time = start_time
         self.end_time = end_time
 
-    def debug_print(self):
-        print("  power_state:{}, start_time:{}, end_time:{}".format(
-            self.power_state, self.start_time, self.end_time))
-
+    def __repr__(self):
+        return "{}(power_state:{}, start_time:{}, end_time:{})".format(
+            self.__class__, self.power_state, self.start_time, self.end_time)
                 
 
 class PowerData:
     
     def __init__(self):
         self.power_data = []
+
+    def __repr__(self):
+        ret = "{}(len:{}, {})".format(self.__class__, len(self.power_data), self.power_data)
+        
+        return ret
 
     def add(self, value, start_time, end_time):
         if len(self.power_data) > 0 and self.power_data[-1].power_state == power_state(value):
@@ -42,6 +50,12 @@ class PowerData:
         else:
             datapoint = DataPoint(value, start_time, end_time)
             self.power_data.append(datapoint)
+
+        # delete 'old' data
+        if len(self.power_data) > 10:
+            diff_time = self.power_data[-1].end_time - self.power_data[0].start_time
+            if diff_time.seconds > STORE_DATA_TIME_S:
+                del self.power_data[0]
 
         #self.debug_print()
 
@@ -79,11 +93,3 @@ class PowerData:
             return False
 
         return True
-                    
-
-
-    def debug_print(self):
-        print("PowerData len:{}".format(len(self.power_data)))
-        for pd in self.power_data:
-            pd.debug_print()
-

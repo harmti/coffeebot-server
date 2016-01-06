@@ -5,9 +5,11 @@ from datetime import datetime
 import dateutil.parser
 import itertools
 import requests
+import types
 
 
 from powerdata import PowerData
+
 
 class ClientData:
     
@@ -17,9 +19,10 @@ class ClientData:
         self.is_coffee_ready = False
         self.coffee_making_time = None
 
-    def debug_print(self):
-        attrs = vars(self)
-        print ', '.join("%s: %s" % item for item in attrs.items())
+    def __repr__(self):
+        return "{}(client_id:{}, power_data:{}, is_coffee_ready:{}, coffee_making_time:{})".format(
+            self.__class__, self.client_id, self.power_data, 
+            self.is_coffee_ready, self.coffee_making_time)
 
 data = {}
 
@@ -33,7 +36,7 @@ def process_data(client_id, values_raw, start, end):
     else:
         client_data = data[client_id]
 
-    print("client_id:{}".format(client_id))
+    #print("client_id:{}".format(client_id))
 
     values_str = values_raw.split(",")
     
@@ -67,12 +70,14 @@ def process_data(client_id, values_raw, start, end):
 def check_notify(client_data):
     
     print("check_notify()")
+    #print(repr(client_data))
 
     if client_data.is_coffee_ready == True:
         if client_data.power_data.is_off() == True:
+            print("Coffee machine turned off")
             client_data.is_coffee_ready = False
     elif client_data.power_data.is_ready() == True:
-        print("Coffee is ready", client_data.__dict__)
+        print("Coffee is ready")
         client_data.is_coffee_ready = True
         client_data.coffee_making_time = datetime.now()
         notify(client_data)
@@ -80,6 +85,7 @@ def check_notify(client_data):
          
 def notify(client_data):
     print("sending notification for client:{}".format(client_data.client_id))
+    print(repr(client_data))
     payload = { "token": "aVrpYcqBBfE2rWVk3wW5yM28gLK3CH", 
                 "user": "gkKtGcAqXZPZ4Yyeii8ArW6jx9oRA9",
                 "title": u"Kahvia",
