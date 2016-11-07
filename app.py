@@ -22,4 +22,4 @@ def hello():
 
 
 if __name__ == '__main__':
-    coffee_app.run(debug=True, host="0.0.0.0")
+    coffee_app.run(debug=True, host="0.0.0.0", port=4488)
