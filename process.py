@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 
-
 from datetime import datetime
 import dateutil.parser
 import itertools
-import requests
 import types
 
 
 from powerdata import PowerData
+from notify import Notify
 
 
 class ClientData:
-    
     def __init__(self, client_id):
         self.client_id = client_id
         self.power_data = PowerData()
@@ -24,72 +22,62 @@ class ClientData:
             self.__class__, self.client_id, self.power_data, 
             self.is_coffee_ready, self.coffee_making_time)
 
-data = {}
+class ProcessData:
+    def __init__(self):
+        self.data = {}
+        self.notify = Notify()
 
-def process_data(client_id, values_raw, start, end):
+    def process_data(self, client_id, values_raw, start, end):
     
-    global data
+        if not client_id in self.data:
+            client_data = ClientData(client_id)
+            self.data[client_id] = client_data
+        else:
+            client_data = self.data[client_id]
 
-    if not client_id in data:
-        client_data = ClientData(client_id)
-        data[client_id] = client_data
-    else:
-        client_data = data[client_id]
+        #print("client_id:{}".format(client_id))
 
-    #print("client_id:{}".format(client_id))
-
-    values_str = values_raw.split(",")
+        values_str = values_raw.split(",")
     
-    values = map(int, values_str)
+        values = map(int, values_str)
     
-    #print(values)
+        #print(values)
     
-    start_time = dateutil.parser.parse(start)
-    end_time = dateutil.parser.parse(end)
+        start_time = dateutil.parser.parse(start)
+        end_time = dateutil.parser.parse(end)
      
-    if len(values) == 0:
-        # should not happen
-        print("No data!!")
-        return
+        if len(values) == 0:
+            # should not happen
+            print("No data!!")
+            return
     
-    time_interval = (end_time - start_time) / len(values)
+        time_interval = (end_time - start_time) / len(values)
         
-    print("time_interval:{}".format(time_interval))
+        print("time_interval:{}".format(time_interval))
         
-    timeval = start_time
-    for (value, items) in itertools.groupby(values):
-        #print(value, items)
-        count = len(list(items))
-        
-        client_data.power_data.add(value, timeval, timeval + time_interval * count)
-        timeval += time_interval * count
+        timeval = start_time
+        for (value, items) in itertools.groupby(values):
+            #print(value, items)
+            count = len(list(items))
 
-    check_notify(client_data)
+            client_data.power_data.add(value, timeval, timeval + time_interval * count)
+            timeval += time_interval * count
 
+        self.check_notify(client_data)
 
-def check_notify(client_data):
+    def check_notify(self, client_data):
     
-    print("check_notify()")
-    #print(repr(client_data))
+        print("check_notify()")
+        #print(repr(client_data))
 
-    if client_data.is_coffee_ready == True:
-        if client_data.power_data.is_off() == True:
-            print("Coffee machine turned off")
-            client_data.is_coffee_ready = False
-    elif client_data.power_data.is_ready() == True:
-        print("Coffee is ready")
-        client_data.is_coffee_ready = True
-        client_data.coffee_making_time = datetime.now()
-        notify(client_data)
+        if client_data.is_coffee_ready == True:
+            if client_data.power_data.is_off() == True:
+                print("Coffee machine turned off")
+                client_data.is_coffee_ready = False
+        elif client_data.power_data.is_ready() == True:
+            print("Coffee is ready")
+            client_data.is_coffee_ready = True
+            client_data.coffee_making_time = datetime.now()
+            self.notify.notify(client_data.client_id[:4])
 
          
-def notify(client_data):
-    print("sending notification for client:{}".format(client_data.client_id))
-    print(repr(client_data))
-    payload = { "token": "aVrpYcqBBfE2rWVk3wW5yM28gLK3CH", 
-                "user": "gkKtGcAqXZPZ4Yyeii8ArW6jx9oRA9",
-                "title": u"Kahvia",
-                "message": u"Tuoretta kahvetta ({})".format(client_data.client_id[:4]) }
-    r = requests.post("https://api.pushover.net/1/messages.json", data=payload)
-
-

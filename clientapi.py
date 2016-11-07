@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import os
-from flask import Flask, request, Blueprint
+from flask import Flask, request, Blueprint, g
 
-from process import process_data
+from process import ProcessData
 
 client_api = Blueprint('client_api', __name__)
 
@@ -20,7 +20,7 @@ def v1_post_data():
     end=request.form['end']
     print("client_id:{}, start:{}, end:{}, values:{}".format(client_id, start, end, values))
 
-    process_data(client_id, values, start, end)
+    g.datahandler.process_data(client_id, values, start, end)
     return "Got data:'{}'\n".format(values)
 
 
