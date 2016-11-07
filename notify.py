@@ -13,7 +13,6 @@ CONF_FILE="notify.yaml"
 class Notify:
 
     def __init__(self):
-        print("Notify.__init__()")
         self.config = self.read_config()
 
     def read_config(self):

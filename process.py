@@ -67,7 +67,7 @@ class ProcessData:
 
     def check_notify(self, client_data):
     
-        print("check_notify()")
+        #print("check_notify()")
         #print(repr(client_data))
 
         if client_data.is_coffee_ready == True:
