@@ -27,8 +27,6 @@ class Notify:
         for sender, protodata in self.config['senders'].items():
             if client in protodata['clients']:
                 getattr(self, protodata['protocol'])(client, protodata)
-        #self.pushover_notify(client)
-        #self.hipchat_notify(client)
 
     def pushover(self, client, data):
         payload = { "token": data['token'], 
@@ -37,7 +35,6 @@ class Notify:
                     "message": data['message'] }
         r = requests.post("https://api.pushover.net/1/messages.json", data=payload)
         print(r.text)
-    
 
     def hipchat(self, client, data):
         # API V2, send message to room:

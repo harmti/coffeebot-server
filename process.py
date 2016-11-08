@@ -78,6 +78,6 @@ class ProcessData:
             print("Coffee is ready")
             client_data.is_coffee_ready = True
             client_data.coffee_making_time = datetime.now()
-            self.notify.notify(client_data.client_id[:4])
+            self.notify.notify(client_data.client_id)
 
          
