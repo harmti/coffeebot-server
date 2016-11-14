@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from flask import Flask, request, Blueprint, g
+from flask import Flask, request, Blueprint
 
 from process import ProcessData
 
@@ -13,14 +13,13 @@ def hello():
 
 @client_api.route('/v1/post_data', methods=['GET', 'POST'])
 def v1_post_data():
-    print("Request: '{}', form:{}".format(request.url, request.form.keys()))
+    #print("Request: '{}', form:{}".format(request.url, request.form.keys()))
     client_id=request.form['id']
     values=request.form['values']
     start=request.form['start']
     end=request.form['end']
     print("client_id:{}, start:{}, end:{}, values:{}".format(client_id, start, end, values))
 
-    g.datahandler.process_data(client_id, values, start, end)
     return "Got data:'{}'\n".format(values)
 
 

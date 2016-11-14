@@ -8,7 +8,7 @@ senders:
     title: Kahvia
     message: Tuoretta kahvetta    
   hipchat1:
-    clients: ["test"]
+    clients: ["7CEB070D"]
     protocol: hipchat
     server: hipchat.ssh.com
     token: yI00XvChuoBKYkzpCu5sbj9HGk3ZbbD6nd5eZul6

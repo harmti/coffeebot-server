@@ -10,6 +10,9 @@ from powerdata import PowerData
 from notify import Notify
 
 
+g_client_data = {}
+
+
 class ClientData:
     def __init__(self, client_id):
         self.client_id = client_id
@@ -24,16 +27,17 @@ class ClientData:
 
 class ProcessData:
     def __init__(self):
-        self.data = {}
         self.notify = Notify()
 
     def process_data(self, client_id, values_raw, start, end):
+
+        global g_client_data
     
-        if not client_id in self.data:
+        if not client_id in g_client_data:
             client_data = ClientData(client_id)
-            self.data[client_id] = client_data
+            g_client_data[client_id] = client_data
         else:
-            client_data = self.data[client_id]
+            client_data = g_client_data[client_id]
 
         #print("client_id:{}".format(client_id))
 
@@ -41,7 +45,7 @@ class ProcessData:
     
         values = map(int, values_str)
     
-        #print(values)
+        #print("Values:", values)
     
         start_time = dateutil.parser.parse(start)
         end_time = dateutil.parser.parse(end)
@@ -53,11 +57,11 @@ class ProcessData:
     
         time_interval = (end_time - start_time) / len(values)
         
-        print("time_interval:{}".format(time_interval))
+        #print("time_interval:{}".format(time_interval))
         
         timeval = start_time
         for (value, items) in itertools.groupby(values):
-            #print(value, items)
+            #print("iterate value, items", value, items)
             count = len(list(items))
 
             client_data.power_data.add(value, timeval, timeval + time_interval * count)

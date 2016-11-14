@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, g
+from flask import Flask
 
 from clientapi import client_api
 from process import ProcessData
@@ -9,11 +9,6 @@ from process import ProcessData
 coffee_app = Flask(__name__)
 
 coffee_app.register_blueprint(client_api)
-
-@coffee_app.before_request
-def add_server_to_globals():
-    datahandler = ProcessData()
-    g.datahandler = datahandler
 
 
 @coffee_app.route('/')
