@@ -7,6 +7,8 @@ from process import ProcessData
 
 client_api = Blueprint('client_api', __name__)
 
+process = ProcessData()
+
 @client_api.route('/')
 def hello():
     return 'Hello World!'
@@ -20,6 +22,7 @@ def v1_post_data():
     end=request.form['end']
     print("client_id:{}, start:{}, end:{}, values:{}".format(client_id, start, end, values))
 
+    process.process_data(client_id, values, start, end)
     return "Got data:'{}'\n".format(values)
 
 

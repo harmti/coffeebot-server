@@ -44,7 +44,7 @@ class PowerData:
         return ret
 
     def add(self, value, start_time, end_time):
-        #print("add: before", self)
+        #print("PowerData.add: before", self)
         if len(self.power_data) > 0 and self.power_data[-1].power_state == power_state(value):
             # just add to the latest item
             self.power_data[-1].end_time = end_time
@@ -58,7 +58,7 @@ class PowerData:
             if diff_time.seconds > STORE_DATA_TIME_S:
                 del self.power_data[0]
 
-        #print("add: after", self)
+        #print("PowerData.add: after", self)
 
     def is_off(self):
         if len(self.power_data) <= 1:
