@@ -22,6 +22,9 @@ class Notify:
             except yaml.YAMLError as exc:
                 print(exc)
 
+    def report_success(self, response):
+        print("{} {}".format(response.status_code, response.text))
+
     def notify(self, client):
         print("sending notification for client:'{}'".format(client))
         for sender, protodata in self.config['senders'].items():
@@ -34,23 +37,29 @@ class Notify:
                     "title": data['title'],
                     "message": data['message'] }
         r = requests.post("https://api.pushover.net/1/messages.json", data=payload)
-        print(r.text)
+        self.report_success(r)
 
     def hipchat(self, client, data):
         # API V2, send message to room:
         url = 'https://{}/v2/room/{}/notification'.format(data['server'], data['roomid'])
-        message = data['message']
         headers = {
             "content-type": "application/json",
             "authorization": "Bearer {}".format(data['token'])}
         datastr = json.dumps({
-            'message': message,
+            'message': data['message'],
             'color': data['color'],
             'message_format': 'html',
             'notify': True})
         r = requests.post(url, headers=headers, data=datastr)
-        print(r.text)
+        self.report_success(r)
 
-    
+    def slack(self, client, data):
+        url = 'https://hooks.slack.com/services/{}'.format(data['token'])
+        headers = {"content-type": "application/json"}
+        datastr = json.dumps({
+            'text': data['message'],
+            'channel': data['channel']})
+        r = requests.post(url, headers=headers, data=datastr)
+        self.report_success(r)
 
 

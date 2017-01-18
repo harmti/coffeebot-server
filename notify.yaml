@@ -1,18 +1,24 @@
 
 senders:
   pushover1:
-    clients: []
+    clients: ["test"]
     protocol: pushover
     token: aVrpYcqBBfE2rWVk3wW5yM28gLK3CH
     user: gkKtGcAqXZPZ4Yyeii8ArW6jx9oRA9
     title: Kahvia
     message: Tuoretta kahvetta    
   hipchat1:
-    clients: ["7CEB070D"]
+    clients: ["test", "7CEB070D"]
     protocol: hipchat
     server: hipchat.ssh.com
     token: yI00XvChuoBKYkzpCu5sbj9HGk3ZbbD6nd5eZul6
     roomid: 120
     message: Fresh coffee!
     color: yellow
+  slack1:
+    clients: ["test", "7CEB070D"]
+    protocol: slack
+    token: T3LNF4DEY/B3TU4TLS2/OBMk0dfwGI0yl2aZy3ap39Dp
+    channel: "#coffee4"
+    message: Fresh coffee!
 
