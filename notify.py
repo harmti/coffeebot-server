@@ -57,8 +57,13 @@ class Notify:
         url = 'https://hooks.slack.com/services/{}'.format(data['token'])
         headers = {"content-type": "application/json"}
         datastr = json.dumps({
-            'text': data['message'],
-            'channel': data['channel']})
+            'channel': data['channel'],
+            "attachments":[{
+                'title': data['message'],
+                'color': data['color']
+                }]
+        })
+        print(datastr)
         r = requests.post(url, headers=headers, data=datastr)
         self.report_success(r)
 
