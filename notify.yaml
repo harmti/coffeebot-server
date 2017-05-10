@@ -8,7 +8,7 @@ senders:
     title: Kahvia
     message: Tuoretta kahvetta    
   hipchat1:
-    clients: ["7CEB070D"]
+    clients: ["5D9D59FA"]
     protocol: hipchat
     server: hipchat.ssh.com
     token: yI00XvChuoBKYkzpCu5sbj9HGk3ZbbD6nd5eZul6
@@ -16,7 +16,7 @@ senders:
     message: Fresh coffee!
     color: yellow
   slack1:
-    clients: ["test", "7CEB070D"]
+    clients: ["*", "test", "0DCB8F81"]
     protocol: slack
     token: T3LNF4DEY/B3TU4TLS2/OBMk0dfwGI0yl2aZy3ap39Dp
     channel: "#coffee4"

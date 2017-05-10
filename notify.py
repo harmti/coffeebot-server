@@ -28,7 +28,7 @@ class Notify:
     def notify(self, client):
         print("sending notification for client:'{}'".format(client))
         for sender, protodata in self.config['senders'].items():
-            if client in protodata['clients']:
+            if '*' in protodata['clients'] or client in protodata['clients']:
                 getattr(self, protodata['protocol'])(client, protodata)
 
     def pushover(self, client, data):
