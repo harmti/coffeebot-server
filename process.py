@@ -8,22 +8,10 @@ import types
 
 from powerdata import PowerData
 from notify import Notify
-
+from clientdata import ClientData
 
 g_client_data = {}
 
-
-class ClientData:
-    def __init__(self, client_id):
-        self.client_id = client_id
-        self.power_data = PowerData()
-        self.is_coffee_ready = False
-        self.coffee_making_time = None
-
-    def __repr__(self):
-        return "{}(client_id:{}, power_data:{}, is_coffee_ready:{}, coffee_making_time:{})".format(
-            self.__class__, self.client_id, self.power_data, 
-            self.is_coffee_ready, self.coffee_making_time)
 
 class ProcessData:
     def __init__(self):
@@ -74,14 +62,17 @@ class ProcessData:
         #print("check_notify()")
         #print(repr(client_data))
 
+        (is_fresh_coffee, making_duration) = client_data.power_data.is_ready()
+
         if client_data.is_coffee_ready == True:
             if client_data.power_data.is_off() == True:
                 print("Coffee machine turned off")
                 client_data.is_coffee_ready = False
-        elif client_data.power_data.is_ready() == True:
+        elif is_fresh_coffee == True:
             print("Coffee is ready")
             client_data.is_coffee_ready = True
             client_data.coffee_making_time = datetime.now()
-            self.notify.notify(client_data.client_id)
+            client_data.coffee_making_duration = making_duration
+            self.notify.notify(client_data)
 
          

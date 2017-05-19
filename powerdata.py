@@ -91,6 +91,6 @@ class PowerData:
         # the power usage rather quickly. Anyway can happen in error
         # situations, like network or server hickups.
         if warmup_time.seconds > MAX_WARMUP_TIME_FOR_NOTIFY_S:
-            return False
+            return (False, 0)
 
-        return True
+        return (True, making_time.seconds)
