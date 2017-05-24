@@ -16,7 +16,7 @@ senders:
     message: Fresh coffee!
     color: yellow
   slack1:
-    clients: ["*"]
+    clients: ["*", "test"]
     protocol: slack
     token: T3LNF4DEY/B3TU4TLS2/OBMk0dfwGI0yl2aZy3ap39Dp
     channel: "#coffee4"

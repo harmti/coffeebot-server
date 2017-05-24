@@ -72,19 +72,19 @@ class PowerData:
 
     def is_ready(self):
         if len(self.power_data) <= 2:
-            return False
+            return (False, 0)
 
         if self.power_data[-1].power_state != POWER_WARMUP:
-            return False
+            return (False, 0)
 
         if self.power_data[-2].power_state != POWER_MAKING:
-            return False
+            return (False, 0)
 
         making_time = self.power_data[-2].end_time - self.power_data[-2].start_time
         warmup_time = self.power_data[-1].end_time - self.power_data[-1].start_time
 
         if making_time.seconds < MIN_MAKING_TIME_S:
-            return False
+            return (False, 0)
 
         # Don't bother to report if this is already old news.  This
         # should not happen in normal scenrarious, as client reports
