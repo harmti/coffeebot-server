@@ -1,32 +1,26 @@
-# Define here where to send the "Fresh Coffee!" announcements.
-# Format "Senders: Configurations: Settings"
-# Each "configuration" can send notifications with one protocol to a single
-# channel, but from multiple clients (agents). It is possible to send messages
-# to several channels by defining multiple configurations.
-# Use "test" as the test client ID, or "*" for all the clients.
 
 senders:
   pushover1:
     clients: [<comma separated list of clients>]
     protocol: pushover
     token: <pushover.net API token>
-    user: <pushover.net user name (delivery group)>
-    title: Fresh Coffee!
-    message: Fresh Coffee!
+    user: <ipushover.net user name (delivery group)>
+    title: <title of the message>
+    message: <message text>
   hipchat1:
     clients: [<comma separated list of clients>]
     protocol: hipchat
     server: <server ip/dns name>
     token: <API token>
     roomid: <room id>
-    message: Fresh Coffee!
+    message: <message text>
     color: yellow
   slack1:
     clients: [<comma separated list of clients>]
     protocol: slack
     token:  <API token>
     channel: <channel name>
-    message: Fresh Coffee!
+    message: <message text>
     color: <good|warning|danger|hex color code>
   influxdb1:
     clients: [<comma separated list of clients>]
