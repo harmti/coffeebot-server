@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import request, Blueprint
+from flask import request, Blueprint, jsonify
 
 from process import ProcessData
 
@@ -10,17 +10,16 @@ process = ProcessData()
 
 @client_api.route('/')
 def hello():
-    return 'Hello World!'
+    return 'Greetings from CoffeeBot!'
 
 @client_api.route('/v1/post_data', methods=['GET', 'POST'])
 def v1_post_data():
-    client_id = request.form['id']
-    values = request.form['values']
-    start = request.form['start']
-    end = request.form['end']
-    print("client_id:{}, start:{}, end:{}, values:{}".format(client_id, start, end, values))
+    data = {}
+    data['client_id'] = request.form['id']
+    data['values'] = request.form['values']
+    data['start_time'] = request.form['start']
+    data['end_time'] = request.form['end']
+    print("data:{}".format(data))
 
-    process.process_data(client_id, values, start, end)
-    return "Got data:'{}'\n".format(values)
-
-
+    process.process_data(data)
+    return jsonify(data)

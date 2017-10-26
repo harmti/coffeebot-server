@@ -13,34 +13,35 @@ class ProcessData(object):
     def __init__(self):
         self.notify = Notify()
 
-    def process_data(self, client_id, values_raw, start, end):
+    def process_data(self, data):
 
         global g_client_data
 
-        if client_id not in g_client_data:
-            client_data = ClientData(client_id)
-            g_client_data[client_id] = client_data
+        if data['client_id'] not in g_client_data:
+            client_data = ClientData(data['client_id'])
+            g_client_data[data['client_id']] = client_data
         else:
-            client_data = g_client_data[client_id]
+            client_data = g_client_data[data['client_id']]
 
-        values_str = values_raw.split(",")
-        values = map(int, values_str)
-        start_time = dateutil.parser.parse(start)
-        end_time = dateutil.parser.parse(end)
+        values = list(map(int, data['values'].split(",")))
+        start_time = dateutil.parser.parse(data['start_time'])
+        end_time = dateutil.parser.parse(data['end_time'])
 
-        if len(values) == 0:
-            # should not happen
-            print("No data!!")
+        if len(data['values']) == 0:
+            # Client did not senD any ata. This should not happen, but just ignore.
+            print("Client did not send any data!!")
             return
 
-        time_interval = (end_time - start_time) / len(values)
+        # Duration of one measurement value. This assumes client uses fixed
+        # slot duration.
+        slot_duration = (end_time - start_time) / len(values)
 
         timeval = start_time
         for (value, items) in itertools.groupby(values):
             count = len(list(items))
 
-            client_data.power_data.add(value, timeval, timeval + time_interval * count)
-            timeval += time_interval * count
+            client_data.power_data.add(value, timeval, timeval + slot_duration * count)
+            timeval += slot_duration * count
 
         self.check_notify(client_data)
 
