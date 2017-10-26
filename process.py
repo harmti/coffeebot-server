@@ -3,9 +3,12 @@
 from datetime import datetime
 import dateutil.parser
 import itertools
+import logging
 
 from notify import Notify
 from clientdata import ClientData
+
+logger = logging.getLogger(__name__)
 
 g_client_data = {}
 
@@ -29,7 +32,7 @@ class ProcessData(object):
 
         if len(data['values']) == 0:
             # Client did not senD any ata. This should not happen, but just ignore.
-            print("Client did not send any data!!")
+            logger.warning("Client did not send any data!!")
             return
 
         # Duration of one measurement value. This assumes client uses fixed
@@ -51,10 +54,10 @@ class ProcessData(object):
 
         if client_data.is_coffee_ready is True:
             if client_data.power_data.is_off() is True:
-                print("Coffee machine turned off")
+                logger.info("Coffee machine turned off")
                 client_data.is_coffee_ready = False
         elif is_fresh_coffee is True:
-            print("Coffee is ready")
+            logger.info("Coffee is ready")
             client_data.is_coffee_ready = True
             client_data.coffee_making_time = datetime.now()
             client_data.coffee_making_duration = making_duration

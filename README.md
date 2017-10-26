@@ -8,7 +8,7 @@ No problem! Connect the company’s coffee machine to net and get alerts to slac
 
 Coffeebot uses Ubiquiti Networks mFi mPower device https://www.ubnt.com/mfi/mpower/. Coffeebot runs as an extra process on the mPower device. It does not interact with the normal mFi Controller process.
 
-Tested only on mPower mini decice, server running on Ubuntu.
+Tested only on mPower mini decice, server running on Ubuntu. Runs both with Python 2 and 3.
 
 How does it work
 ----------------

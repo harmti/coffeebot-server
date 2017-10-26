@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from flask import request, Blueprint, jsonify
-
 from process import ProcessData
+import logging
+
+logger = logging.getLogger(__name__)
 
 client_api = Blueprint('client_api', __name__)
 
@@ -19,7 +21,7 @@ def v1_post_data():
     data['values'] = request.form['values']
     data['start_time'] = request.form['start']
     data['end_time'] = request.form['end']
-    print("data:{}".format(data))
+    logger.info("data:{}".format(data))
 
     process.process_data(data)
     return jsonify(data)
