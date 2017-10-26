@@ -1,9 +1,11 @@
 # Define here where to send the "Fresh Coffee!" announcements.
 # Format "Senders: Configurations: Settings"
+#
 # Each "configuration" can send notifications with one protocol to a single
 # channel, but from multiple clients (agents). It is possible to send messages
-# to several channels by defining multiple configurations.
-# Use "test" as the test client ID, or "*" for all the clients.
+# to several channels by defining multiple configurations. Use "test" as the
+# test client ID, or "*" for all the clients. Verify message sending works (to
+# "test" clients) by running `python test_sending.py`.
 
 senders:
   pushover1:
