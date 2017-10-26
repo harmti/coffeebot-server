@@ -9,7 +9,6 @@ from clientdata import ClientData
 
 g_client_data = {}
 
-
 class ProcessData(object):
     def __init__(self):
         self.notify = Notify()
@@ -24,14 +23,8 @@ class ProcessData(object):
         else:
             client_data = g_client_data[client_id]
 
-        #print("client_id:{}".format(client_id))
-
         values_str = values_raw.split(",")
-
         values = map(int, values_str)
-
-        #print("Values:", values)
-
         start_time = dateutil.parser.parse(start)
         end_time = dateutil.parser.parse(end)
 
@@ -42,11 +35,8 @@ class ProcessData(object):
 
         time_interval = (end_time - start_time) / len(values)
 
-        #print("time_interval:{}".format(time_interval))
-
         timeval = start_time
         for (value, items) in itertools.groupby(values):
-            #print("iterate value, items", value, items)
             count = len(list(items))
 
             client_data.power_data.add(value, timeval, timeval + time_interval * count)
@@ -55,9 +45,6 @@ class ProcessData(object):
         self.check_notify(client_data)
 
     def check_notify(self, client_data):
-
-        #print("check_notify()")
-        #print(repr(client_data))
 
         (is_fresh_coffee, making_duration) = client_data.power_data.is_ready()
 
