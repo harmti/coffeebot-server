@@ -2,16 +2,11 @@ import json
 import requests
 
 import yaml
-from yaml import load, dump
-from yaml import Loader, Dumper
 
-from clientdata import ClientData
+CONF_FILE = "notify.yaml"
 
 
-CONF_FILE="notify.yaml"
-
-
-class Notify:
+class Notify(object):
 
     def __init__(self):
         self.config = self.read_config()
@@ -33,12 +28,12 @@ class Notify:
                 getattr(self, conf['protocol'])(client, conf)
 
     def pushover(self, client, conf):
-        payload = { "token": conf['token'],
-                    "user": conf['user'],
-                    "title": conf['title'],
-                    "message": conf['message'] }
-        r = requests.post("https://api.pushover.net/1/messages.json", data=payload)
-        self.report_success(r)
+        payload = {"token": conf['token'],
+                   "user": conf['user'],
+                   "title": conf['title'],
+                   "message": conf['message']}
+        response = requests.post("https://api.pushover.net/1/messages.json", data=payload)
+        self.report_success(response)
 
     def hipchat(self, client, conf):
         # API V2, send message to room:
@@ -51,8 +46,8 @@ class Notify:
             'color': conf['color'],
             'message_format': 'html',
             'notify': True})
-        r = requests.post(url, headers=headers, data=datastr)
-        self.report_success(r)
+        response = requests.post(url, headers=headers, data=datastr)
+        self.report_success(response)
 
     def slack(self, client, conf):
         url = 'https://hooks.slack.com/services/{}'.format(conf['token'])
@@ -64,20 +59,16 @@ class Notify:
                 'color': conf['color']
                 }]
         })
-        print(datastr)
-        r = requests.post(url, headers=headers, data=datastr)
-        self.report_success(r)
+        response = requests.post(url, headers=headers, data=datastr)
+        self.report_success(response)
 
     def influxdb(self, client, conf):
         url = 'http://' + conf['server'] + ":" + str(conf['port']) + '/write'
         headers = {"content-type": "application/octet-stream"}
         auth = (conf['user'], conf['password'])
-        params = { 'db': conf['database'] }
+        params = {'db': conf['database']}
         payload = conf['measurement']
         payload += ",machine=" + conf['machine'] + ",id=" + client.client_id
         payload += " {}={}".format('duration_s', client.coffee_making_duration)
-        print(url, headers, auth, params, payload)
-        r = requests.post(url, headers=headers, auth=auth, params=params, data=payload)
-        self.report_success(r)
-
-
+        response = requests.post(url, headers=headers, auth=auth, params=params, data=payload)
+        self.report_success(response)

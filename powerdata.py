@@ -11,7 +11,6 @@ MAX_WARMUP_TIME_FOR_NOTIFY_S = 10 * 60
 # data is stored in memory for this time
 STORE_DATA_TIME_S = 60 * 60
 
-
 def power_state(value):
     if value < 2:
         return POWER_OFF
@@ -20,9 +19,7 @@ def power_state(value):
     else:
         return POWER_MAKING
 
-
-class DataPoint:
-    
+class DataPoint(object):
     def __init__(self, value, start_time, end_time):
         self.power_state = power_state(value)
         self.start_time = start_time
@@ -31,20 +28,16 @@ class DataPoint:
     def __repr__(self):
         return "{}(power_state:{}, start_time:{}, end_time:{})".format(
             self.__class__, self.power_state, self.start_time, self.end_time)
-                
 
-class PowerData:
-    
+class PowerData(object):
     def __init__(self):
         self.power_data = []
 
     def __repr__(self):
         ret = "{}(len:{}, {})".format(self.__class__, len(self.power_data), self.power_data)
-        
         return ret
 
     def add(self, value, start_time, end_time):
-        #print("PowerData.add: before", self)
         if len(self.power_data) > 0 and self.power_data[-1].power_state == power_state(value):
             # just add to the latest item
             self.power_data[-1].end_time = end_time
@@ -57,8 +50,6 @@ class PowerData:
             diff_time = self.power_data[-1].end_time - self.power_data[0].start_time
             if diff_time.seconds > STORE_DATA_TIME_S:
                 del self.power_data[0]
-
-        #print("PowerData.add: after", self)
 
     def is_off(self):
         if len(self.power_data) <= 1:

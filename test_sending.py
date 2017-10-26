@@ -1,15 +1,11 @@
 #!/bin/python
 
 from datetime import datetime
-import dateutil.parser
 
 import notify
-
 from clientdata import ClientData
 
 def main():
-    # my code here
-
     client = ClientData("test")
     client.coffee_making_duration = 222
     client.is_coffee_ready = True

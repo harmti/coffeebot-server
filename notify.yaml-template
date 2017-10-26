@@ -1,5 +1,7 @@
-# Define here where to send the "Fresh Coffee!" announcements.
+# Define how to send the "Fresh Coffee!" announcements.
 # Format "Senders: Configurations: Settings"
+# 
+# Copy relevant sections from here to file `notify.yaml`
 #
 # Each "configuration" can send notifications with one protocol to a single
 # channel, but from multiple clients (agents). It is possible to send messages
